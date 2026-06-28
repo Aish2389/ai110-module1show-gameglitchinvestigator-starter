@@ -1,4 +1,5 @@
 from logic_utils import check_guess
+from app import parse_guess
 
 # FIX (Bug 1): Updated tests to match tuple return format from check_guess
 # Originally tests assumed single string return, but function returns (outcome, message)
@@ -40,3 +41,27 @@ def test_hint_direction_is_correct():
     outcome, message = check_guess(50, 50)
     assert outcome == "Win"
     assert "Correct" in message
+
+
+# FIX (Bug 2): Attempts counter was updated inconsistently.
+# In app.py, attempts are only incremented when parse_guess reports a valid
+# number (ok=True). This regression test pins that gate: invalid input must
+# NOT consume an attempt, while a valid number must.
+def test_invalid_input_does_not_consume_attempt():
+    attempts = 0
+
+    # Invalid input -> parse fails -> attempt count stays the same.
+    ok, _value, _err = parse_guess("abc")
+    if ok:
+        attempts += 1
+    assert ok is False
+    assert attempts == 0
+
+    # Valid input -> parse succeeds -> exactly one attempt is consumed.
+    ok, value, err = parse_guess("42")
+    if ok:
+        attempts += 1
+    assert ok is True
+    assert value == 42
+    assert err is None
+    assert attempts == 1

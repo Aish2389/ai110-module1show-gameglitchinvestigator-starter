@@ -73,9 +73,10 @@ st.sidebar.caption(f"Attempts allowed: {attempt_limit}")
 
 if "secret" not in st.session_state:
     st.session_state.secret = random.randint(low, high)
+#FIX bug2: change sessions_state.attempts to 0
 
 if "attempts" not in st.session_state:
-    st.session_state.attempts = 1
+    st.session_state.attempts = 0
 
 if "score" not in st.session_state:
     st.session_state.score = 0
@@ -125,16 +126,19 @@ if st.session_state.status != "playing":
     else:
         st.error("Game over. Start a new game to try again.")
     st.stop()
-
+# FIXME: Bug 2 - Streamlit state mismatch
+# FIX: Bug 2 Streamlit state mismatch resolved with AI assistance.
+# Ensured attempts only increment after valid input parsing and
+# fixed inconsistent initialization between new game and first load.
 if submit:
-    st.session_state.attempts += 1
-
     ok, guess_int, err = parse_guess(raw_guess)
 
     if not ok:
         st.session_state.history.append(raw_guess)
         st.error(err)
     else:
+        st.session_state.attempts += 1
+
         st.session_state.history.append(guess_int)
 
         secret = st.session_state.secret
@@ -158,7 +162,7 @@ if submit:
                 f"Final score: {st.session_state.score}"
             )
         else:
-            if st.session_state.attempts >= attempt_limit:
+            if st.session_state.attempts > attempt_limit: #FIX bug2: change session_state.attempts from >= attempt_limit to >
                 st.session_state.status = "lost"
                 st.error(
                     f"Out of attempts! "

@@ -34,12 +34,12 @@ I used Claude for AI-guided assistance in debugging the game and verifying that 
 
 - Give one example of an AI suggestion that was correct (including what the AI suggested and how you verified the result).
 
-Claude correctly identified that the check_guess function returned a tuple and that tests were incorrectly comparing the full tuple to a string, consequently outputting incorrect hints
+For bug #1, Claude correctly identified that the check_guess function returned a tuple and that tests were incorrectly comparing the full tuple to a string, consequently outputting incorrect hints
 It was correct and I verified the result by running pytest and observing assertion failures. I updated tests to unpack (outcome, message) for the return statement, and all tests passed.
 
 - Give one example of an AI suggestion that was incorrect or misleading (including what the AI suggested and how you verified the result).
 
-Claude initially suggested that only message direction logic was wrong and did not immediately identify the need to refactor test expectations. This was partially misleading and I verified the result by running pytest. In pytest, the tests failed because they expected a string return instead of a tuple. I corrected tests manually by aligning them with the actual function output.
+For bug #2, Claude suggested changing the entire attempts model from "guesses used" to "remaining guesses" which was misleading because the rest of the UI display and game-over logic was built around "attempts used". Additionally, it tried to make changes to code outside the area of the error". I avoided this change and instead kept the original model, only fixing the inconsistant updata behavior.
 
 ---
 
