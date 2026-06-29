@@ -35,6 +35,7 @@ It wrote the code, ran away, and now the game is unplayable.
 - [ ] Explain what fixes you applied.
       1. I corrected the hint logic so that the hints correctly reflect the relationship between the guess and secret number by refactoring game logic to ensure consistent behavior and game flow
       2. I fixed the attempt tracking by ensuring the attempt counter is properly updated correctly across game interactions, improving reliability of state updates across user interactions.
+      3. I fixed the score update inconsistencies by removing parity-based scoring logic and making score updates deterministic, so all wrong guesses subtract a fixed amount and win rewards predictably with attempt number.
 
 ## 📸 Demo Walkthrough
 
@@ -62,15 +63,16 @@ Describe your fixed game in numbered steps so a reader can follow along without 
 ```
 # Paste your pytest output here, e.g.:
 # pytest tests/
-# =================================================================== test session starts ===================================================================
+# 
+======================================================================== test session starts ========================================================================
 platform win32 -- Python 3.12.3, pytest-9.1.1, pluggy-1.6.0
 rootdir: C:\Users\pazha\AI110\Game Investigator\ai110-module1show-gameglitchinvestigator-starter
 plugins: anyio-4.14.0
-collected 5 items                                                                                                                                          
+collected 12 items                                                                                                                                                   
 
-tests\test_game_logic.py .....                                                                                                                       [100%]
+tests\test_game_logic.py ............                                                                                                                          [100%]
 
-==================================================================== 5 passed in 3.24s ====================================================================
+======================================================================== 12 passed in 2.19s =========================================================================
 ```
 
 ## 🚀 Stretch Features

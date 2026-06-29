@@ -6,7 +6,7 @@ Answer each question in 3 to 5 sentences. Be specific and honest about what actu
 
 - What did the game look like the first time you ran it?
 
-When I first ran the game, it looked like a normal guessing game where the AI asked the user to guess a number between 1 and 100 and told me I had 8 attempts in total. 
+When I first ran the game, it looked like a normal guessing game where the AI asked the user to guess a number between 1 and 100 and told me I had 8 attempts in total.    
 
 - List at least two concrete bugs you noticed at the start  
   (for example: "the hints were backwards").
@@ -21,7 +21,7 @@ Document at least 3 bugs you found. Add rows as needed.
 
 | Input                                    | Expected Behavior                           | Actual Behavior                          | Console Output / Error          |
 |------------------------------------------|---------------------------------------------|------------------------------------------|---------------------------------|
-|User enters guess #7 in normal difficulty |Nothing/Next provided hint                   |Game ends from running out of attempts    |"Out of attempts" message        |
+|User enters 7th guess in normal difficulty|Nothing/Next provided hint                   |Game ends from running out of attempts    |"Out of attempts" message        |
 |Guess is lower than target number         |Hint provided is "Go HIGHER!"                |Hint provided is "GO LOWER!"              |None                             |
 |User guesses a number                     |Score updates consistently based on rules    |Score updates inconsistently/unpredictably|None                             |
 |Click "New Game" button after game ends   |Game resets with new number and cleared state|Game does not reset and nothing changes   |"You already won, start new game"|
