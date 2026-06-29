@@ -1,5 +1,6 @@
+import pytest
 from logic_utils import check_guess
-from app import parse_guess
+from app import parse_guess, update_score
 
 # FIX (Bug 1): Updated tests to match tuple return format from check_guess
 # Originally tests assumed single string return, but function returns (outcome, message)
@@ -65,3 +66,24 @@ def test_invalid_input_does_not_consume_attempt():
     assert value == 42
     assert err is None
     assert attempts == 1
+
+
+# FIX (Bug 3): Scoring must be deterministic and free of attempt_number parity.
+# The old code branched on attempt_number % 2, so wrong guesses lost different
+# amounts on odd vs even attempts. This test pins the fixed behavior:
+#   - A wrong guess ("Too High"/"Too Low") always loses exactly 5 points,
+#     regardless of whether attempt_number is odd or even.
+#   - A win awards max(10, 100 - 10 * (attempt_number - 1)), independent of parity.
+@pytest.mark.parametrize("attempt_number", [1, 2, 3, 4, 5, 6])
+def test_update_score_is_deterministic_no_parity(attempt_number):
+    # Wrong guesses: flat -5 on every attempt, odd or even.
+    assert update_score(100, "Too High", attempt_number) == 95
+    assert update_score(100, "Too Low", attempt_number) == 95
+
+
+def test_update_score_win_bonus_scales_with_attempt():
+    # Win bonus decays by 10 per attempt, floored at 10 — no parity effects.
+    assert update_score(0, "Win", 1) == 100   # 100 - 10*0
+    assert update_score(0, "Win", 2) == 90    # 100 - 10*1
+    assert update_score(0, "Win", 3) == 80    # 100 - 10*2
+    assert update_score(0, "Win", 20) == 10   # floored at 10

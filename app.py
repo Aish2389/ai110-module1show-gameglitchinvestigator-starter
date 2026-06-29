@@ -28,20 +28,17 @@ def parse_guess(raw: str):
         return False, None, "That is not a number."
 
     return True, value, None
-
+# FIXME: Bug 3 - inconsistent scoring
+# FIX (Bug 3): Removed attempt-parity (% 2) logic so scoring is deterministic.
+# "Too High" and "Too Low" now behave symmetrically, and the Win bonus
+# scales simply with the attempt number. Fixed with AI assistance.
 def update_score(current_score: int, outcome: str, attempt_number: int):
+    # attempt_number is 1-based (already incremented before this call)
     if outcome == "Win":
-        points = 100 - 10 * (attempt_number + 1)
-        if points < 10:
-            points = 10
+        points = max(10, 100 - 10 * (attempt_number - 1))
         return current_score + points
 
-    if outcome == "Too High":
-        if attempt_number % 2 == 0:
-            return current_score + 5
-        return current_score - 5
-
-    if outcome == "Too Low":
+    if outcome == "Too High" or outcome == "Too Low":
         return current_score - 5
 
     return current_score
