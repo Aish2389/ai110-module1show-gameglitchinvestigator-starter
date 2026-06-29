@@ -11,18 +11,20 @@ When I first ran the game, it looked like a normal guessing game where the AI as
 - List at least two concrete bugs you noticed at the start  
   (for example: "the hints were backwards").
 
-However, I found 3 bugs upon playing the game, the first being that the guessing bar said I could "press enter to apply" but wouldn't apply the guess unless I clicked the button "Submit Guess". Next, the hints are opposite, for example if the guess was higher than the correct number, the hint would tell me to guess lower and vice versa when my guess was lower than the number. Lastly, the "New Game" button doesn't actual start a new game and it doesn't reset the page.
+However, I found 3 bugs upon playing the game, the first being that the hints are opposite, for example if the guess was higher than the correct number, the hint would tell me to guess lower and vice versa when my guess was lower than the number. 
+Secondly, the attempt count was off because everytime I was supposed to have one more attempt left, the game told me that I was out of attempts. 
+Thirdly, the score calculation logic was off and did not update consistently based on player performance. The score changed in unexpected ways and was difficult to predict
 
 **Bug Reproduction Log**
 
 Document at least 3 bugs you found. Add rows as needed.
 
-| Input                            | Expected Behavior                           | Actual Behavior                                 | Console Output / Error |
-|----------------------------------|---------------------------------------------|-------------------------------------------------|------------------------|
-|Type guess and press Enter        |Guess is submitted automcatically            |Nothing happens unless "Submit button" is clicked| None                   |
-|Guess is lower than target number |Hint provided is "Go HIGHER!"                |Hint provided is "GO LOWER!"                     | None                   |
-|Guess is higher than target number|Hint provided is "Go LOWER!"                 |Hint provided is "GO HIGHER!"                    | None                   |
-|Click "New Game" button           |Game resets with new number and cleared state|Game does not reset and nothing changes          | None                   |
+| Input                                    | Expected Behavior                           | Actual Behavior                          | Console Output / Error          |
+|------------------------------------------|---------------------------------------------|------------------------------------------|---------------------------------|
+|User enters guess #7 in normal difficulty |Nothing/Next provided hint                   |Game ends from running out of attempts    |"Out of attempts" message        |
+|Guess is lower than target number         |Hint provided is "Go HIGHER!"                |Hint provided is "GO LOWER!"              |None                             |
+|User guesses a number                     |Score updates consistently based on rules    |Score updates inconsistently/unpredictably|None                             |
+|Click "New Game" button after game ends   |Game resets with new number and cleared state|Game does not reset and nothing changes   |"You already won, start new game"|
 
 ---
 
@@ -64,11 +66,23 @@ Claude helped me understand why some of my tests were failing by explaining the 
 
 - How would you explain Streamlit "reruns" and session state to a friend who has never used Streamlit?
 
+Streamlit reruns the entire script from top to bottom everytime the user interacts with any part of the app like clicking a button or submitting an input. This means without coding anything new, the variables in the app automatically reset on every interaction.
+
+Session state is what Streamlit uses to remember the "state" of variables and other information between reruns. It makes sure the the app remembers information and values after each button click
+
 ---
 
 ## 5. Looking ahead: your developer habits
 
 - What is one habit or strategy from this project that you want to reuse in future labs or projects?
   - This could be a testing habit, a prompting strategy, or a way you used Git.
+
+One habit from this project I learned from this project that I will use for future projects is informing the AI's assistance the exact area I wanted changes in and specifying that no other parts of the code should be changed. It's useful for retaining control over AI's suggestions and maintaining understanding of all parts of the code.
+
 - What is one thing you would do differently next time you work with AI on a coding task?
+
+Next time, I would take more time to verify AI's suggestions more before agreeing to the changes instead of exploring the effects of the changes and going back to the original code.
+
 - In one or two sentences, describe how this project changed the way you think about AI generated code.
+
+This project showed me that AI-generated code is useful for quick fixes and ideas, but needs careful handling around using context in code. I learned that's important to understand how the framework actually runs that to blindly apply suggestions from AI since it sometimes provides misleading interpretations of complex code.
